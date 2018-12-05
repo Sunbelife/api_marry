@@ -1,7 +1,5 @@
 <?php
 namespace app\index\controller;
-namespace app\index\model\Music;
-
 use app\index\model\Music;
 
 class Index
@@ -18,7 +16,7 @@ class Index
 
     public function get_music_list()
     {
-        $data = 1;
+        $data = Music::test();
         return json($data);
     }
 }
