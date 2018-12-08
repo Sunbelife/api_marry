@@ -6,12 +6,10 @@
  * Time: 4:14 PM
  */
 
-namespace app\index\model;
+namespace app\web\model;
 use think\Model;
 
-class Music extends Model {
+class Music extends Model
+{
     protected $pk = 'music_id';
-    public static function test() {
-        return "1";
-    }
 }
