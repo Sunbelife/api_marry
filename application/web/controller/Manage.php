@@ -21,16 +21,21 @@ class Manage extends Controller
         return "管理界面接口";
     }
 
+    public function return_json($code, $msg, $data)
+    {
+        return json(array('code' => $code, 'msg' => $msg, 'data' => $data));
+    }
+
     # 验证用户
     public function verify_user($user_name, $pass_word)
     {
         $result = User::getByUser_name($user_name);
         if ($result -> pass_word == $pass_word)
         {
-            return json(array('status_code' => 200));
+            return $this::return_json(200, "验证成功", "null");
         } else
         {
-            return json(array('status_code' => 250));
+            return $this::return_json(250, "验证失败", "null");
         }
     }
 
@@ -42,7 +47,7 @@ class Manage extends Controller
         } else {
             $data = Music::where('music_type', $music_type)->select();
         }
-        return $data;
+        return $this::return_json(200, "获取成功", $data);
     }
 
     public function upload_music()
@@ -55,22 +60,22 @@ class Manage extends Controller
         $data = Music::getByMusic_id($music_id);
         $result = $data->delete();
         if ($result == true) {
-            return json(array('status_code' => 200));
+            return $this::return_json(200, "删除成功", "null");
         }
-        return json(array('status_code' => 250));
+        return $this::return_json(250, "删除失败", "null");
     }
 
     # 赴宴信息管理部分
     public function get_attend_info_marry_man()
     {
         $data = MarryMan::all();
-        return $data;
+        return $this::return_json(200, "获取成功", $data);
     }
 
     public function get_attend_info_attend_man($marry_id)
     {
         $data = MarryMan::getByMarry_id($marry_id);
-        return $data;
+        return $this::return_json(200, "获取成功", $data);
     }
 
     # 模板管理部分
@@ -82,7 +87,7 @@ class Manage extends Controller
         } else {
             $data = MarryModel::where('model_type', $model_type)->select();
         }
-        return $data;
+        return $this::return_json(200, "获取成功", $data);
     }
 
     public function del_model($model_id)
@@ -90,8 +95,8 @@ class Manage extends Controller
         $data = MarryModel::getByModel_id($model_id);
         $result = $data->delete();
         if ($result == true) {
-            return json(array('status_code' => 200));
+            return $this::return_json(200, "获取成功", $data);
         }
-        return json(array('status_code' => 250));
+        return $this::return_json(250, "获取成功", $data);
     }
 }
