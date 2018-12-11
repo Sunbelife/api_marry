@@ -12,7 +12,7 @@ use app\web\model\MarryModel;
 use think\Controller;
 use app\web\model\Barrage;
 use app\web\model\Music;
-use app\web\model\User;
+use app\web\model\Admin;
 
 class Manage extends Controller
 {
@@ -29,7 +29,7 @@ class Manage extends Controller
     # 验证用户
     public function verify_user($user_name, $pass_word)
     {
-        $result = User::getByUser_name($user_name);
+        $result = Admin::getByUser_name($user_name);
         if ($result -> pass_word == $pass_word)
         {
             return $this::return_json(200, "验证成功", "null");
@@ -74,7 +74,7 @@ class Manage extends Controller
 
     public function get_attend_info_attend_man($marry_id)
     {
-        $data = MarryMan::getByMarry_id($marry_id);
+        $data = MarryMan::where('Marry_id', $marry_id)->select();
         return $this::return_json(200, "获取成功", $data);
     }
 

@@ -2,14 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: sunbelife
- * Date: 2018/12/7
- * Time: 5:11 PM
+ * Date: 2018/12/9
+ * Time: 10:48 PM
  */
-
 namespace app\web\model;
 use think\Model;
 
-class User extends Model
+class Admin extends Model
 {
 
 }
