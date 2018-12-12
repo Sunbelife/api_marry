@@ -72,9 +72,9 @@ class Manage extends Controller
         return $this::return_json(200, "获取成功", $data);
     }
 
-    public function get_attend_info_attend_man($marry_id)
+    public function get_attend_info_attend_man($card_id)
     {
-        $data = MarryMan::where('Marry_id', $marry_id)->select();
+        $data = MarryMan::where('card_id', $card_id)->select();
         return $this::return_json(200, "获取成功", $data);
     }
 
