@@ -58,13 +58,21 @@ Class Api extends Controller
             $session_key = $this::return_value($data, "session_key");
             $open_id = $this::return_value($data, "openid");
             $data = array('open_id' => $open_id);
+            $old_user = User::getByOpenId($open_id);
 
-            # 存数据库
-            $User = new User;
-            $User->open_id = $open_id;
-            $User->session_key = $session_key;
-            $User->time = $login_time;
-            $User->save();
+            if ($old_user)
+            {
+                $old_user -> session_key = $session_key;
+                $result = $old_user->save();
+            } else
+            {
+                # 存数据库
+                $User = new User;
+                $User->open_id = $open_id;
+                $User->session_key = $session_key;
+                $User->time = $login_time;
+                $User->save();
+            }
 
             return $this::return_json(200, "获取成功", $data);
         }
@@ -74,8 +82,9 @@ Class Api extends Controller
     public function get_union_id($open_id, $iv, $encryptedData)
     {
         $app_id = $this::$app_id;
+        $iv = urldecode($iv);
         $sessionKey = User::getByOpenId($open_id)->session_key;
-        $pc = new WXBizDataCrypt($app_id, $sessionKey);
+        $pc = new WxBizDataCrypt($app_id, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data);
         $data = json_decode($data);
         $union_id = $this::return_value($data, "unionId");
@@ -88,6 +97,7 @@ Class Api extends Controller
         }
         return $this::return_json($errCode, "错误码请参考文档", null);
     }
+
 
     # 请帖部分
     # 保存请帖 - 此处生成 card_id
