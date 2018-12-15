@@ -61,14 +61,14 @@
         <counts>
           <entry key="dummy" value="69" />
           <entry key="html" value="64" />
-          <entry key="php" value="14987" />
+          <entry key="php" value="15237" />
           <entry key="txt" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="64" />
-          <entry key="PHP" value="14987" />
+          <entry key="PHP" value="15237" />
           <entry key="PLAIN_TEXT" value="74" />
         </counts>
       </usages-collector>
@@ -76,7 +76,7 @@
         <counts>
           <entry key="html" value="2" />
           <entry key="ico" value="1" />
-          <entry key="php" value="57" />
+          <entry key="php" value="60" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
@@ -84,7 +84,7 @@
         <counts>
           <entry key="HTML" value="2" />
           <entry key="Image" value="1" />
-          <entry key="PHP" value="57" />
+          <entry key="PHP" value="60" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
@@ -100,8 +100,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1005">
-              <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
+            <state relative-caret-position="564">
+              <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
               <folding>
                 <element signature="e#6#92#0#PHP" expanded="true" />
                 <element signature="e#124#144#0#PHP" expanded="true" />
@@ -111,29 +111,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/wx/controller/CryptWxData/WxBizDataCrypt.php">
+        <entry file="file://$PROJECT_DIR$/thinkphp/helper.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+            <state relative-caret-position="153">
+              <caret line="520" column="13" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/thinkphp/library/think/facade/Request.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="303">
+              <caret line="54" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/extend/myClass/MyImage.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="303">
+              <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
               <folding>
-                <element signature="e#6#94#0#PHP" expanded="true" />
+                <element signature="e#115#131#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/app.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="64" column="25" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/cookie.php">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -181,8 +185,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>生成</find>
-      <find>md</find>
       <find>card_id</find>
       <find>marryM</find>
       <find>return_card_id</find>
@@ -211,6 +213,8 @@
       <find>width</find>
       <find>mov</find>
       <find>mo</find>
+      <find>THUMB_SCALING</find>
+      <find>pic</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -435,12 +439,12 @@
       <workItem from="1544582360203" duration="8252000" />
       <workItem from="1544699953101" duration="26545000" />
       <workItem from="1544837224530" duration="5483000" />
-      <workItem from="1544864533041" duration="33000" />
+      <workItem from="1544864533041" duration="1568000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101735000" />
+    <option name="totallyTimeSpent" value="103270000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-649" y="-1080" width="2560" height="1080" extended-state="0" />
@@ -584,20 +588,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/wx/view/api/index.php" />
-    <entry file="file://$PROJECT_DIR$/thinkphp/helper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="671">
-          <caret line="520" column="13" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thinkphp/library/think/facade/Request.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="5" lean-forward="true" selection-start-column="5" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/SPL/SPL_c1.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -606,16 +596,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/extend/Image/MyImage.php" />
-    <entry file="file://$PROJECT_DIR$/extend/myClass/MyImage.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2070">
-          <caret line="145" column="25" selection-start-line="145" selection-start-column="20" selection-end-line="145" selection-end-column="25" />
-          <folding>
-            <element signature="e#115#131#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/topthink/think-image/src/Image.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -688,17 +668,6 @@
     <entry file="file://$PROJECT_DIR$/config/cache.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
-          <folding>
-            <element signature="e#6#92#0#PHP" expanded="true" />
-            <element signature="e#124#144#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/wx/controller/CryptWxData/WxBizDataCrypt.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -740,6 +709,41 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config/log.php">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/extend/myClass/MyImage.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+          <folding>
+            <element signature="e#115#131#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thinkphp/library/think/facade/Request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="54" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thinkphp/helper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="520" column="13" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="564">
+          <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
+          <folding>
+            <element signature="e#6#92#0#PHP" expanded="true" />
+            <element signature="e#124#144#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">

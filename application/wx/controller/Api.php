@@ -63,7 +63,7 @@ Class Api extends Controller
             if ($old_user)
             {
                 $old_user -> session_key = $session_key;
-                $result = $old_user->save();
+                $old_user->save();
             } else
             {
                 # 存数据库
@@ -139,19 +139,21 @@ Class Api extends Controller
 
     # 照片裁切上传
     # 差裁切
-    public function upload_pic($p_x = 0, $p_y = 0, $p_width = 500, $p_height = 500, $p_scale = 0)
+    public function upload_pic($p_x = 0, $p_y = 0, $p_width, $p_height, $p_scale)
     {
         $upload_dir = '../public/uploads/photo/';
+
         // 获取表单上传文件
         $file = request()->file('image');
-        $info = $file->move($upload_dir);
+        $file_info = $file->getInfo();
 
+        $my_image = MyImage::open($file);
+        $result = $my_image->thumb($p_width * $p_scale, $p_height * $p_scale)->crop($p_width, $p_height, $p_x, $p_y)->save($upload_dir.$file_info['name']);
 
-
-        if ($info)
+        if ($result)
         {
             $upload_time = Date("Y-m-d H:i:s",time());
-            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).$info->getSaveName();
+            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).$file_info['name'];
             // 成功上传后保存到数据库
             $new_photo = new Photo;
             $new_photo->save([
@@ -244,7 +246,7 @@ Class Api extends Controller
         }
     }
 
-    # 保存设置
+    # 保存设置 - 暂时弃用
 //    public function save_settings($card_id, $is_barrage_on, $music_id)
 //    {
 //        $settings = new Settings;
