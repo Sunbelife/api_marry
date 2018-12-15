@@ -136,6 +136,8 @@ Class Api extends Controller
         $file = request()->file('image');
         $info = $file->move($upload_dir);
 
+
+
         if ($info)
         {
             $upload_time = Date("Y-m-d H:i:s",time());
@@ -233,19 +235,19 @@ Class Api extends Controller
     }
 
     # 保存设置
-    public function save_settings($card_id, $is_barrage_on, $music_id)
-    {
-        $settings = new Settings;
-        $settings->card_id = $card_id;
-        $settings->is_barrage_on = $is_barrage_on;
-        $settings->music_id = $music_id;
-        $result = $settings->save();
-        if ($result)
-        {
-            return $this::return_json(200, "保存成功", null);
-        }
-        return $this::return_json(250, "保存失败", null);
-    }
+//    public function save_settings($card_id, $is_barrage_on, $music_id)
+//    {
+//        $settings = new Settings;
+//        $settings->card_id = $card_id;
+//        $settings->is_barrage_on = $is_barrage_on;
+//        $settings->music_id = $music_id;
+//        $result = $settings->save();
+//        if ($result)
+//        {
+//            return $this::return_json(200, "保存成功", null);
+//        }
+//        return $this::return_json(250, "保存失败", null);
+//    }
 
     # 赴宴信息部分
     # 赴宴填写
@@ -312,6 +314,7 @@ Class Api extends Controller
         $scene = "test";
         $page = "test";
         $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this::$app_id."&secret=".$this::$secret;
+        $qr_model_pic = "static/pic/gen_qr_model.png";
         $data =  json_decode(file_get_contents($access_token_url));
         $errcode = $this::return_value($data, "errcode");
         $errmsg = $this::return_value($data, "errmsg");
@@ -330,6 +333,8 @@ Class Api extends Controller
                 'timeout' => 20
             )));
             $data = file_get_contents($qr_api_url, false, $context);
+            $pic_model = imagecreatefrompng($qr_model_pic);
+
             return $data;
         } else {
             return $this->return_json($errcode, $errmsg, null);
