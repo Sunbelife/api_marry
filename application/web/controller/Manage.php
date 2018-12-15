@@ -50,9 +50,32 @@ class Manage extends Controller
         return $this::return_json(200, "获取成功", $data);
     }
 
-    public function upload_music()
+    # 音乐上传
+    public function upload_music($music_name = 0, $music_type = 0)
     {
-        return "暂未写完";
+        $upload_dir = '../public/uploads/music';
+        // 获取表单上传文件
+        $file = request()->file('music');
+        // 移动到目录下
+        $info = $file->move($upload_dir);
+        if ($info)
+        {
+            $upload_time = Date("Y-m-d H:i:s",time());
+            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).'/'.$info->getSaveName();
+            // 成功上传后保存到数据库
+            $new_music = new Music;
+            $new_music->save([
+                'music_name' => $music_name,
+                'music_type' => $music_type,
+                'music_upload_time' => $upload_time,
+                'music_url' => $file_url
+            ]);
+            return $this::return_json(200, "上传成功", $info->getSaveName());
+        } else
+        {
+            // 上传失败获取错误信息
+            return $this::return_json(250, "上传失败".$file->getError(), null);
+        }
     }
 
     public function del_music($music_id)

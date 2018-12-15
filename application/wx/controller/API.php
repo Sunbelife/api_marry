@@ -7,9 +7,11 @@
  */
 
 namespace app\wx\controller;
+
+use myClass\MyImage;
+use think\Controller;
 use app\wx\model\Settings;
 use app\wx\model\UserCard;
-use think\Controller;
 use app\wx\model\Barrage;
 use app\wx\model\User;
 use app\wx\model\Photo;
@@ -24,7 +26,7 @@ Class Api extends Controller
 
     public function index()
     {
-        return "Hello World!";
+        return $this->fetch();
     }
 
     public function return_json($code, $msg, $data)
@@ -126,11 +128,30 @@ Class Api extends Controller
     }
 
     # 照片裁切上传
-    public function change_pic($pic_url, $position)
+    # 差裁切
+    public function upload_pic($p_x = 0, $p_y = 0, $p_width = 500, $p_height = 500, $p_scale = 0)
     {
-        # 未完成
-        $pic_url = "xxx";
-        return $this::return_json(200, "上传成功, $pic_url");
+        $upload_dir = '../public/uploads/photo/';
+        // 获取表单上传文件
+        $file = request()->file('image');
+        $info = $file->move($upload_dir);
+
+        if ($info)
+        {
+            $upload_time = Date("Y-m-d H:i:s",time());
+            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).$info->getSaveName();
+            // 成功上传后保存到数据库
+            $new_photo = new Photo;
+            $new_photo->save([
+                'photo_url' => $file_url,
+                'upload_time' => $upload_time
+            ]);
+            return $this::return_json(200, "上传成功", null);
+        } else
+        {
+            // 上传失败获取错误信息
+            return $this::return_json(250, "上传失败".$file->getError(), null);
+        }
     }
 
     # Barrage 弹幕部分
