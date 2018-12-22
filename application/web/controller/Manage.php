@@ -9,6 +9,8 @@
 namespace app\web\controller;
 use app\web\model\MarryMan;
 use app\web\model\MarryModel;
+use app\wx\model\AttendInfo;
+use app\wx\model\UserCard;
 use think\Controller;
 use app\web\model\Barrage;
 use app\web\model\Music;
@@ -47,6 +49,12 @@ class Manage extends Controller
         } else {
             $data = Music::where('music_type', $music_type)->select();
         }
+        return $this::return_json(200, "获取成功", $data);
+    }
+
+    public function search_music($music_name)
+    {
+        $data = Music::where('music_name', 'like', '%'.$music_name.'%')->select();
         return $this::return_json(200, "获取成功", $data);
     }
 
@@ -97,12 +105,12 @@ class Manage extends Controller
 
     public function get_attend_info_attend_man($card_id)
     {
-        $data = MarryMan::where('card_id', $card_id)->select();
+        $user = UserCard::getByCardId($card_id);
+        $data = AttendInfo::getByOpenId($user->open_id);
         return $this::return_json(200, "获取成功", $data);
     }
 
     # 模板管理部分
-
     public function get_model_list($model_type = 0)
     {
         if ($model_type == 0) {
