@@ -106,14 +106,14 @@ class Manage extends Controller
 
     public function get_attend_info_attend_man($card_id)
     {
-        $user = UserCard::getByCardId($card_id);
+        $user = UserCard::where('card_id', $card_id)->select();
         if ($user)
         {
             return $this->return_json(250, "获取失败", null);
         }
         try
         {
-            $data = AttendInfo::getByOpenId($user->open_id);
+            $data = AttendInfo::where('open_id', $user->open_id)->select();
         } catch (Exception $exception)
         {
             return $this->return_json(250, "找不到该卡片", null);
