@@ -70,7 +70,7 @@ class Manage extends Controller
         if ($info)
         {
             $upload_time = Date("Y-m-d H:i:s",time());
-            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).'/'.$info->getSaveName();
+            $file_url = "https://".$_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).'/'.$info->getSaveName();
             // 成功上传后保存到数据库
             $new_music = new Music;
             $new_music->save([
