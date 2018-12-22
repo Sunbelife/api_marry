@@ -61,14 +61,14 @@
         <counts>
           <entry key="dummy" value="69" />
           <entry key="html" value="64" />
-          <entry key="php" value="16090" />
+          <entry key="php" value="16226" />
           <entry key="txt" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="64" />
-          <entry key="PHP" value="16090" />
+          <entry key="PHP" value="16226" />
           <entry key="PLAIN_TEXT" value="74" />
         </counts>
       </usages-collector>
@@ -109,8 +109,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/web/controller/Manage.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="115" column="75" lean-forward="true" selection-start-line="115" selection-start-column="75" selection-end-line="115" selection-end-column="75" />
+            <state relative-caret-position="323">
+              <caret line="116" column="12" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="12" />
               <folding>
                 <element signature="e#6#93#0#PHP" expanded="true" />
                 <element signature="e#125#152#0#PHP" expanded="true" />
@@ -527,12 +527,12 @@
       <workItem from="1544837224530" duration="5483000" />
       <workItem from="1544864533041" duration="6535000" />
       <workItem from="1544930464956" duration="1108000" />
-      <workItem from="1545452450541" duration="9008000" />
+      <workItem from="1545452450541" duration="9682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118353000" />
+    <option name="totallyTimeSpent" value="119027000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -825,8 +825,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/web/controller/Manage.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="115" column="75" lean-forward="true" selection-start-line="115" selection-start-column="75" selection-end-line="115" selection-end-column="75" />
+        <state relative-caret-position="323">
+          <caret line="116" column="12" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="12" />
           <folding>
             <element signature="e#6#93#0#PHP" expanded="true" />
             <element signature="e#125#152#0#PHP" expanded="true" />
