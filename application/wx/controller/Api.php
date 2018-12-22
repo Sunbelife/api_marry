@@ -17,7 +17,7 @@ use app\wx\model\User;
 use app\wx\model\Photo;
 use app\web\model\MarryMan;
 use app\wx\model\AttendInfo;
-use app\wx\controller\CryptWxData\WXBizDataCrypt;
+use app\wx\controller\CryptWxData\WxBizDataCrypt;
 
 Class Api extends Controller
 {
@@ -42,6 +42,17 @@ Class Api extends Controller
     public function return_card_id($id)
     {
         return md5(Date("Y-m-d").$id);
+    }
+
+    public function get_shared_user_card($open_id) {
+        $user_card = UserCard::where('open_id', $open_id)->select();
+        if ($user_card)
+        {
+            return $this->return_json(200, "获取成功", $user_card);
+        } else
+        {
+            return $this->return_json(200, "获取失败", null);
+        }
     }
 
     # 验证用户部分
@@ -74,9 +85,9 @@ Class Api extends Controller
                 $User->save();
             }
 
-            return $this::return_json(200, "获取成功", $data);
+            return $this->return_json(200, "获取成功", $data);
         }
-        return $this::return_json($errcode, $errmsg, null);
+        return $this->return_json($errcode, $errmsg, null);
     }
 
     public function get_union_id($open_id, $iv, $encryptedData)
@@ -93,15 +104,15 @@ Class Api extends Controller
             $data = User::getByOpenId($open_id);
             $data->union_id = $union_id;
             $data->save();
-            return $this::return_json(200, "获取成功", null);
+            return $this->return_json(200, "获取成功", null);
         }
-        return $this::return_json($errCode, "错误码请参考文档", null);
+        return $this->return_json($errCode, "错误码请参考文档", null);
     }
 
 
     # 请帖部分
     # 保存请帖 - 此处生成 card_id
-    public function save_user_card($card_id = 0, $changed_log, $cover_pic_url)
+    public function save_user_card($card_id = 0, $open_id, $changed_log, $cover_pic_url)
     {
         $save_time = Date("Y-m-d H:i:s",time());
         if ($card_id == 0)
@@ -109,6 +120,7 @@ Class Api extends Controller
             $UserCard = new UserCard;
             $UserCard->cover_pic_url = $cover_pic_url;
             $UserCard->changed_log = $changed_log;
+            $UserCard->open_id = $open_id;
             $UserCard->time = $save_time;
             $UserCard->save();
             # 生成 card_id
@@ -116,10 +128,10 @@ Class Api extends Controller
             $result = $UserCard->save();
             if ($result == True)
             {
-                return $this::return_json(200, "创建成功", null);
+                return $this->return_json(200, "创建成功", array('card_id'=> $UserCard->card_id));
             } else
             {
-                return $this::return_json(250, "创建失败", null);
+                return $this->return_json(250, "创建失败", null);
             }
         } else if ($card_id != 0)
         {
@@ -129,41 +141,66 @@ Class Api extends Controller
             $result = $curr_card->save();
             if ($result == True)
             {
-                return $this::return_json(200, "修改成功", null);
+                return $this->return_json(200, "修改成功", null);
             } else
             {
-                return $this::return_json(250, "修改失败", null);
+                return $this->return_json(250, "修改失败", null);
             }
         }
     }
 
+    public function get_user_card($card_id) {
+        $data = UserCard::getByCardId($card_id);
+        if ($data)
+        {
+            return $this->return_json(200, "获取成功", $data);
+        } else
+        {
+            return $this->return_json(250, "获取失败", null);
+        }
+    }
+
+    public function del_user_card($card_id)
+    {
+        $data = UserCard::where('card_id', $card_id)->select();
+        foreach ($data as $key) {
+            $key->delete();
+        }
+        return $this->return_json(200, "删除成功", null);
+    }
+
     # 照片裁切上传
-    public function upload_pic($p_x = 0, $p_y = 0, $p_width, $p_height, $p_scale)
+    public function upload_pic($p_x = 0, $p_y = 0, $p_width, $p_height, $p_scale, $p_show_img_scale, $p_init_scale)
     {
         $upload_dir = '../public/uploads/photo/';
+
+        $p_x = -$p_x  * (1 / $p_scale) * (1 / $p_init_scale);
+        $p_y = -$p_y  * (1 / $p_scale) * (1 / $p_init_scale);
+        $p_width = $p_width * (1 / $p_scale) * (1 / $p_init_scale);
+        $p_height = $p_height * (1 / $p_scale) * (1 / $p_init_scale);
 
         // 获取表单上传文件
         $file = request()->file('image');
         $file_info = $file->getInfo();
 
         $my_image = MyImage::open($file);
-        $result = $my_image->thumb($p_width * $p_scale, $p_height * $p_scale)->crop($p_width, $p_height, $p_x, $p_y)->save($upload_dir.$file_info['name']);
+        $result = $my_image->crop($p_width, $p_height, $p_x, $p_y)->save($upload_dir.$file_info['name']);
 
         if ($result)
         {
             $upload_time = Date("Y-m-d H:i:s",time());
-            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).$file_info['name'];
+            $file_url = "https://".$_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).$file_info['name'];
             // 成功上传后保存到数据库
             $new_photo = new Photo;
             $new_photo->save([
                 'photo_url' => $file_url,
                 'upload_time' => $upload_time
             ]);
-            return $this::return_json(200, "上传成功", $file_url);
+            return $this->return_json(200, "上传成功", $file_url);
         } else
         {
             // 上传失败获取错误信息
-            return $this::return_json(250, "上传失败", null);
+            return $this->return_json(250, "上传失败", null);
         }
     }
 
@@ -171,10 +208,12 @@ Class Api extends Controller
     # 发送弹幕
     public function send_barrage_msg($user_name, $card_id, $msg_id = null, $message)
     {
+        $user_card = UserCard::getByCardId($card_id);
+
         $Barriage = new Barrage;
         $send_time = Date("Y-m-d H:i:s",time());
         $msg_id = md5(Date("Y-m-d H:i:s"));
-        $Barriage->card_id = $card_id;
+        $Barriage->open_id = $user_card->open_id; // open_id 与发送者相同
         $Barriage->msg_id = $msg_id;
         $Barriage->user_name = $user_name;
         $Barriage->message = $message;
@@ -184,16 +223,16 @@ Class Api extends Controller
         $result = $Barriage->save();
         if ($result == 1)
         {
-            return $this::return_json(200, "发送成功", null);
+            return $this->return_json(200, "发送成功", null);
         }
-        return $this::return_json(250, "发送失败", null);
+        return $this->return_json(250, "发送失败", null);
     }
 
     # 获取全部弹幕
-    public function get_barrage_msg($card_id)
+    public function get_barrage_msg($open_id)
     {
-        $data = Barrage::where('card_id', $card_id)->select();
-        return $this::return_json(200, "获取成功", $data);
+        $data = Barrage::where('open_id', $open_id)->select();
+        return $this->return_json(200, "获取成功", $data);
     }
 
     public function del_barrage_msg($msg_id)
@@ -207,16 +246,16 @@ Class Api extends Controller
     }
 
     # 获取未读弹幕数量
-    public function get_barrage_msg_is_read($card_id)
+    public function get_barrage_msg_is_read($open_id)
     {
-        $data = Barrage::where('is_read', 0)->where('card_id', $card_id)->count();
+        $data = Barrage::where('is_read', 0)->where('open_id', $open_id)->count();
         return $this->return_json(200, "获取成功", array('is_read_sum'=>$data));
     }
 
     # 弹幕设置已读
-    public function set_barrage_msg_is_read($msg_id)
+    public function set_barrage_msg_is_read($open_id)
     {
-        $data = Barrage::where('msg_id', $msg_id)->select();
+        $data = Barrage::where('open_id', $open_id)->select();
         foreach ($data as $item)
         {
             $item->is_read = 1;
@@ -238,7 +277,7 @@ Class Api extends Controller
         $old_msg = Barrage::getByMsgId($msg_id);
         $barrage = new Barrage;
         $result = $barrage -> save([
-            'card_id'=>$old_msg->card_id,
+            'open_id'=>$old_msg->open_id,
             'user_name'=>"回复 @".$old_msg->user_name.":",
             'message'=>$message,
             'msg_id'=>$msg_id,
@@ -265,18 +304,19 @@ Class Api extends Controller
 //        $result = $settings->save();
 //        if ($result)
 //        {
-//            return $this::return_json(200, "保存成功", null);
+//            return $this->return_json(200, "保存成功", null);
 //        }
-//        return $this::return_json(250, "保存失败", null);
+//        return $this->return_json(250, "保存失败", null);
 //    }
 
     # 赴宴信息部分
     # 赴宴填写
-    public function send_attend_info($card_id, $user_name, $transit_type, $phone_num, $attend_num, $attend_time)
+    public function send_attend_info($open_id, $user_name, $transit_type, $phone_num, $attend_num)
     {
         $attend_info = new AttendInfo;
+        $attend_time = Date("Y-m-d H:i:s",time());
         $result = $attend_info -> save([
-            'card_id' => $card_id,
+            'open_id' => $open_id,
             'user_name' => $user_name,
             'transit_type' => $transit_type,
             'phone_num' => $phone_num,
@@ -294,15 +334,15 @@ Class Api extends Controller
     }
 
     # 赴宴消息获取
-    public function get_attend_info($card_id)
+    public function get_attend_info($open_id)
     {
-        $data = AttendInfo::getCardId($card_id);
+        $data = AttendInfo::getByOpenId($open_id);
         if ($data == null)
         {
-            return $this->return_json(250, "获取失败", $data);
+            return $this->return_json(250, "获取失败", null);
         } else
         {
-            return $this->return_json(200, "获取成功", $data);
+            return $this->return_json(200, "获取成功", array($data));
         }
     }
 
