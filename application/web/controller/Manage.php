@@ -15,6 +15,7 @@ use think\Controller;
 use app\web\model\Barrage;
 use app\web\model\Music;
 use app\web\model\Admin;
+use think\Exception;
 
 class Manage extends Controller
 {
@@ -110,10 +111,12 @@ class Manage extends Controller
         {
             return $this->return_json(250, "获取失败", null);
         }
-        $data = AttendInfo::getByOpenId($user->open_id);
-        if ($data)
+        try
         {
-            return $this->return_json(250, "获取失败", null);
+            $data = AttendInfo::getByOpenId($user->open_id);
+        } catch (Exception $exception)
+        {
+            return $this->return_json(250, "找不到该卡片", null);
         }
         return $this::return_json(200, "获取成功", $data);
     }
