@@ -8,7 +8,6 @@
 
 namespace app\wx\controller;
 
-use myClass\MyImage;
 use think\Controller;
 use app\wx\model\Settings;
 use app\wx\model\UserCard;
@@ -183,7 +182,7 @@ Class Api extends Controller
         $file = request()->file('image');
         $file_info = $file->getInfo();
 
-        $my_image = MyImage::open($file);
+        $my_image = Image::open($file);
         $result = $my_image->crop($p_width, $p_height, $p_x, $p_y)->save($upload_dir.$file_info['name']);
 
         if ($result)
