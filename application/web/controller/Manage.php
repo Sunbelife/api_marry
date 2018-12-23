@@ -43,20 +43,25 @@ class Manage extends Controller
     }
 
     # Music 音乐部分
-    public function get_music_list($music_type = 0)
+    public function get_music_list($music_type = 0, $music_name = 0)
     {
-        if ($music_type == 0) {
+        if ($music_type == 0 && $music_name == 0)
+        {
             $data = Music::all();
-        } else {
+        } else if ($music_type != 0)
+        {
             $data = Music::where('music_type', $music_type)->select();
+        } else if ($music_name != 0)
+        {
+            $data = Music::where('music_name', 'like', '%'.$music_name.'%')->select();
         }
-        return $this::return_json(200, "获取成功", $data);
-    }
-
-    public function search_music($music_name)
-    {
-        $data = Music::where('music_name', 'like', '%'.$music_name.'%')->select();
-        return $this::return_json(200, "获取成功", $data);
+        if ($data != null)
+        {
+            return $this::return_json(200, "获取成功", $data);
+        } else
+        {
+            return $this::return_json(250, "获取失败", $data);
+        }
     }
 
     # 音乐上传
