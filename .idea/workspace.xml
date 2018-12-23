@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12b4904e-b021-4e05-b130-97cc77c211c5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/application/web/controller/Manage.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/web/controller/Manage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/wx/controller/Api.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/wx/controller/Api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -61,14 +61,14 @@
         <counts>
           <entry key="dummy" value="69" />
           <entry key="html" value="64" />
-          <entry key="php" value="16885" />
+          <entry key="php" value="16927" />
           <entry key="txt" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="64" />
-          <entry key="PHP" value="16885" />
+          <entry key="PHP" value="16927" />
           <entry key="PLAIN_TEXT" value="74" />
         </counts>
       </usages-collector>
@@ -97,11 +97,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="234" column="31" lean-forward="true" selection-start-line="234" selection-start-column="31" selection-end-line="234" selection-end-column="31" />
+            <state relative-caret-position="363">
+              <caret line="135" column="13" lean-forward="true" selection-start-line="135" selection-start-column="13" selection-end-line="135" selection-end-column="13" />
               <folding>
                 <element signature="e#124#140#0#PHP" expanded="true" />
               </folding>
@@ -118,11 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/web/controller/Manage.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="55" column="59" lean-forward="true" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="59" />
+            <state relative-caret-position="1307">
+              <caret line="91" column="65" selection-start-line="91" selection-start-column="61" selection-end-line="91" selection-end-column="65" />
               <folding>
                 <element signature="e#6#93#0#PHP" expanded="true" />
                 <element signature="e#125#152#0#PHP" expanded="true" />
@@ -189,7 +189,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>photo</find>
       <find>qr</find>
       <find>gen_user_card_qr</find>
       <find>//</find>
@@ -203,7 +202,6 @@
       <find>Image</find>
       <find>open</find>
       <find>$fun</find>
-      <find>save</find>
       <find>thu</find>
       <find>info</find>
       <find>width</find>
@@ -217,8 +215,10 @@
       <find>uplo</find>
       <find>upload</find>
       <find>image</find>
-      <find>del</find>
       <find>music</find>
+      <find>save</find>
+      <find>del</find>
+      <find>创建</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -260,8 +260,8 @@
         <option value="$PROJECT_DIR$/extend/myClass/MyImage.php" />
         <option value="$PROJECT_DIR$/application/wx/controller/API.php" />
         <option value="$PROJECT_DIR$/application/wx/model/AttendInfo.php" />
-        <option value="$PROJECT_DIR$/application/wx/controller/Api.php" />
         <option value="$PROJECT_DIR$/application/web/controller/Manage.php" />
+        <option value="$PROJECT_DIR$/application/wx/controller/Api.php" />
       </list>
     </option>
   </component>
@@ -564,12 +564,12 @@
       <workItem from="1544837224530" duration="5483000" />
       <workItem from="1544864533041" duration="6535000" />
       <workItem from="1544930464956" duration="1108000" />
-      <workItem from="1545452450541" duration="16968000" />
+      <workItem from="1545452450541" duration="17819000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126313000" />
+    <option name="totallyTimeSpent" value="127164000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -853,23 +853,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
+    <entry file="file://$PROJECT_DIR$/application/web/controller/Manage.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="234" column="31" lean-forward="true" selection-start-line="234" selection-start-column="31" selection-end-line="234" selection-end-column="31" />
+        <state relative-caret-position="1307">
+          <caret line="91" column="65" selection-start-line="91" selection-start-column="61" selection-end-line="91" selection-end-column="65" />
           <folding>
-            <element signature="e#124#140#0#PHP" expanded="true" />
+            <element signature="e#6#93#0#PHP" expanded="true" />
+            <element signature="e#125#152#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/web/controller/Manage.php">
+    <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="55" column="59" lean-forward="true" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="59" />
+        <state relative-caret-position="363">
+          <caret line="135" column="13" lean-forward="true" selection-start-line="135" selection-start-column="13" selection-end-line="135" selection-end-column="13" />
           <folding>
-            <element signature="e#6#93#0#PHP" expanded="true" />
-            <element signature="e#125#152#0#PHP" expanded="true" />
+            <element signature="e#124#140#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

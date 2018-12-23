@@ -116,7 +116,7 @@ Class Api extends Controller
     public function save_user_card($card_id = 0, $open_id, $changed_log, $cover_pic_url)
     {
         $save_time = Date("Y-m-d H:i:s",time());
-        if ($card_id == 0)
+        if ($card_id == '0')
         {
             $UserCard = new UserCard;
             $UserCard->cover_pic_url = $cover_pic_url;
@@ -134,7 +134,7 @@ Class Api extends Controller
             {
                 return $this->return_json(250, "创建失败", null);
             }
-        } else if ($card_id != 0)
+        } else
         {
             $curr_card = UserCard::getByCardId($card_id);
             $curr_card->changed_log = $changed_log;
@@ -239,6 +239,10 @@ Class Api extends Controller
     public function del_barrage_msg($msg_id)
     {
         $data = Barrage::where('msg_id', $msg_id)->select();
+        if ($data != true)
+        {
+            return $this->return_json(250, "删除失败，无此条消息", null);
+        }
         foreach ($data as $key)
         {
             $key->delete();
