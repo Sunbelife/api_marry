@@ -7,7 +7,7 @@
  */
 
 namespace app\wx\model;
-use think\model;
+use think\Model;
 
 class AttendInfo extends Model
 {

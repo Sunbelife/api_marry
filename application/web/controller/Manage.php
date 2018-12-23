@@ -15,6 +15,7 @@ use think\Controller;
 use app\web\model\Barrage;
 use app\web\model\Music;
 use app\web\model\Admin;
+use think\Exception;
 
 class Manage extends Controller
 {
@@ -69,7 +70,7 @@ class Manage extends Controller
         if ($info)
         {
             $upload_time = Date("Y-m-d H:i:s",time());
-            $file_url = $_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).'/'.$info->getSaveName();
+            $file_url = "https://".$_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).'/'.$info->getSaveName();
             // 成功上传后保存到数据库
             $new_music = new Music;
             $new_music->save([
@@ -106,7 +107,18 @@ class Manage extends Controller
     public function get_attend_info_attend_man($card_id)
     {
         $user = UserCard::getByCardId($card_id);
-        $data = AttendInfo::getByOpenId($user->open_id);
+        if ($user == null)
+        {
+            return $this->return_json(250, "获取失败", null);
+        }
+        try
+        {
+            $open_id = $user->open_id;
+            $data = AttendInfo::where('open_id', $open_id)->select();
+        } catch (Exception $exception)
+        {
+            return $this->return_json(250, "找不到该卡片", null);
+        }
         return $this::return_json(200, "获取成功", $data);
     }
 
