@@ -8,6 +8,7 @@
 
 namespace app\wx\controller;
 
+use think\image;
 use think\Controller;
 use app\wx\model\Settings;
 use app\wx\model\UserCard;
