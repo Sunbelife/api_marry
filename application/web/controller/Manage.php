@@ -45,22 +45,27 @@ class Manage extends Controller
     # Music 音乐部分
     public function get_music_list($music_type = 0, $music_name = 0)
     {
-        if ($music_type == 0 && $music_name == 0)
+        # 啥条件都没有的时候
+        if ($music_type == '0' and $music_name == '0')
         {
+            # 输出所有
             $data = Music::all();
-        } else if ($music_type != 0)
-        {
-            $data = Music::where('music_type', $music_type)->select();
-        } else if ($music_name != 0)
+        } else if ($music_type == '0' && $music_name != '0') # 类别不限，按名称搜
         {
             $data = Music::where('music_name', 'like', '%'.$music_name.'%')->select();
+        } else if ($music_type != '0' && $music_name == '0') # 名称不限，按类别搜
+        {
+            $data = Music::where('music_type', $music_type)->select();
+        } else
+        {
+            $data = Music::where('music_type', $music_type)->where('music_name', $music_name)->select();
         }
-        if ($data != null)
+        if ($data == true)
         {
             return $this::return_json(200, "获取成功", $data);
         } else
         {
-            return $this::return_json(250, "获取失败", $data);
+            return $this::return_json(250, "获取失败", null);
         }
     }
 
@@ -72,7 +77,7 @@ class Manage extends Controller
         $file = request()->file('music');
         // 移动到目录下
         $info = $file->move($upload_dir);
-        if ($info)
+        if (!empty($info)) # 有东西，不空
         {
             $upload_time = Date("Y-m-d H:i:s",time());
             $file_url = "https://".$_SERVER['HTTP_HOST'].str_replace("../public", '', $upload_dir).'/'.$info->getSaveName();
