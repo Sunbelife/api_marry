@@ -8,6 +8,8 @@
 
 namespace app\wx\controller;
 
+ini_set(”memory_limit”,”100M”);
+
 use think\Image;
 use think\Controller;
 use app\wx\model\UserCard;
