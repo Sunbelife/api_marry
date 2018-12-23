@@ -60,7 +60,7 @@ class Manage extends Controller
         {
             $data = Music::where('music_type', $music_type)->where('music_name', $music_name)->select();
         }
-        if (empty($data))
+        if ($data == true)
         {
             return $this::return_json(200, "获取成功", $data);
         } else
