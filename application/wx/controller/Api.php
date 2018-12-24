@@ -230,7 +230,7 @@ Class Api extends Controller
     # 获取全部弹幕
     public function get_barrage_msg($open_id)
     {
-        $data = Barrage::where('open_id', $open_id)->order('msg_id', 'asc')->select();
+        $data = Barrage::where('open_id', $open_id)->order('msg_id', 'desc')->select();
         return $this->return_json(200, "获取成功", $data);
     }
 
