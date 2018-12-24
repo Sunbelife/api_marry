@@ -241,9 +241,15 @@ Class Api extends Controller
         {
             return $this->return_json(250, "删除失败，无此条消息", null);
         }
-        foreach ($data as $key)
+        if ($data->is_reply == "1")
         {
-            $key->delete();
+            # 是回复则只删除回复
+            $data[1]->delete();
+        } else {
+            foreach ($data as $key)
+            {
+                $key->delete();
+            }
         }
         return $this->return_json(200, "删除成功", null);
     }
