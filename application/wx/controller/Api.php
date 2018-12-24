@@ -230,31 +230,22 @@ Class Api extends Controller
     # 获取全部弹幕
     public function get_barrage_msg($open_id)
     {
-        $data = Barrage::where('open_id', $open_id)->select();
+        $data = Barrage::where('open_id', $open_id)->order('msg_id', 'asc')->select();
         return $this->return_json(200, "获取成功", $data);
     }
 
-    public function del_barrage_msg($msg_id)
+    public function del_barrage_msg($msg_id, $is_reply)
     {
         $data = Barrage::where('msg_id', $msg_id)->select();
         if ($data != true)
         {
             return $this->return_json(250, "删除失败，无此条消息", null);
         }
-        $has_reply = 0;
-        foreach ($data as $key)
+        if ($is_reply == 1)
         {
-            $temp = $this->return_value($key, "is_reply");
-            if ($temp != null)
-            {
-                $has_reply = 1;
-            }
-        }
-        if ($has_reply == 1)
-        {
-            # 是回复则只删除回复
             $data[1]->delete();
-        } else {
+        }
+        else {
             foreach ($data as $key)
             {
                 # 否则全删除
