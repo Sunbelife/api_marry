@@ -271,12 +271,12 @@ Class Api extends Controller
             $item->is_read = 1;
             $item->save();
         }
-        if ($data == null)
-        {
-            return $this->return_json(250, "设置失败", null);
-        } else
+        if (empty($data) != true)
         {
             return $this->return_json(200, "设置成功", null);
+        } else
+        {
+            return $this->return_json(250, "设置失败", null);
         }
     }
 

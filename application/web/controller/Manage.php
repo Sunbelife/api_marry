@@ -73,7 +73,7 @@ class Manage extends Controller
         # 执行查询
         $data = Music::where($search_condition)->select();
 
-        if (empty($data) == true)
+        if (empty($data) != true)
         {
             return $this::return_json(200, "获取成功", $data);
         } else
@@ -161,7 +161,7 @@ class Manage extends Controller
     {
         $data = MarryModel::getByModel_id($model_id);
         $result = $data->delete();
-        if ($result == true) {
+        if (empty($result) == true) {
             return $this::return_json(200, "获取成功", $data);
         }
         return $this::return_json(250, "获取成功", $data);
