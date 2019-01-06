@@ -40,7 +40,7 @@ Class Api extends Controller
 
     public function return_card_id($id)
     {
-        return md5(Date("Y-m-d").$id);
+        return substr(md5(Date("Y-m-d").$id), 8, 16);
     }
 
     public function get_shared_user_card($open_id) {
@@ -387,7 +387,8 @@ Class Api extends Controller
         $data =  json_decode(file_get_contents($access_token_url));
         $errcode = $this::return_value($data, "errcode");
         $errmsg = $this::return_value($data, "errmsg");
-        if ($errcode == 0) {
+        if ($errcode == 0)
+        {
             $access_token = $data->access_token;
             $qr_api_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=".$access_token;
             $parms = [
@@ -403,10 +404,10 @@ Class Api extends Controller
             $png = file_get_contents($qr_api_url, false, $context);
             $file_name = "uploads/qr_codes/".md5(Date("Y-m-d H:i:s",time())).".jpg";
             $file = fopen($file_name, "w");
-            fwrite($file, $png);//写入
-            fclose($file);//关闭
+            fwrite($file, $png);
+            fclose($file);
             $image = Image::open($qr_model_pic);
-            $image->water($file_name, array(330, 1250))->save($file_name);
+            $image -> water($file_name, array(330, 1250)) -> save($file_name);
             $file_url = "https://xcx.lyy99.com/".$file_name;
             return $this->return_json(200, "生成成功", $file_url);
         } else {
