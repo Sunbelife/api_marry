@@ -382,31 +382,35 @@ Class Api extends Controller
     # 生成二维码
     public function gen_user_card_qr($card_id = 0, $scene = 0, $page = 0)
     {
-        $scene = "test";
-        $page = "test";
+        $scene = "test/xx/xx";
+        $page = "pages/index/index";
         $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this::$app_id."&secret=".$this::$secret;
-        $qr_model_pic = "static/pic/gen_qr_model.png";
+        $qr_model_pic = "static/pic/gen_qr_model.jpg";
         $data =  json_decode(file_get_contents($access_token_url));
         $errcode = $this::return_value($data, "errcode");
         $errmsg = $this::return_value($data, "errmsg");
         if ($errcode == 0) {
-            $access_token = $this::return_value($data, "access_token");
-            $qr_api_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN";
+            $access_token = $data->access_token;
+            $qr_api_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=".$access_token;
             $parms = [
-                'access_token' => $access_token,
                 'scene' => $scene,
                 'page' => $page
             ];
             $context = stream_context_create(array('http' => array(
                 'method' => 'POST',
-                'header' => 'Content-type:application/x-www-form-urlencoded',
-                'content' => http_build_query($parms),
+                'header' => 'Content-type:application/json',
+                'content' => json_encode($parms),
                 'timeout' => 20
             )));
-            $data = file_get_contents($qr_api_url, false, $context);
-            $pic_model = imagecreatefrompng($qr_model_pic);
-
-            return $data;
+            $png = file_get_contents($qr_api_url, false, $context);
+            $file_name = "uploads/qr_codes/".md5(Date("Y-m-d H:i:s",time())).".jpg";
+            $file = fopen($file_name, "w");
+            fwrite($file, $png);//写入
+            fclose($file);//关闭
+            $image = Image::open($qr_model_pic);
+            $image->water($file_name, array(330, 1250))->save($file_name);
+            $file_url = "https://xcx.lyy99.com/".$file_name;
+            return $this->return_json(200, "生成成功", array("pic_url"=>$file_url));
         } else {
             return $this->return_json($errcode, $errmsg, null);
         }

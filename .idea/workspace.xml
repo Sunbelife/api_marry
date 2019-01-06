@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12b4904e-b021-4e05-b130-97cc77c211c5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/wx/controller/Api.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/wx/controller/Api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,14 +64,14 @@
         <counts>
           <entry key="dummy" value="69" />
           <entry key="html" value="64" />
-          <entry key="php" value="17884" />
+          <entry key="php" value="18443" />
           <entry key="txt" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="64" />
-          <entry key="PHP" value="17884" />
+          <entry key="PHP" value="18443" />
           <entry key="PLAIN_TEXT" value="74" />
         </counts>
       </usages-collector>
@@ -79,7 +79,7 @@
         <counts>
           <entry key="html" value="3" />
           <entry key="ico" value="1" />
-          <entry key="php" value="67" />
+          <entry key="php" value="69" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
@@ -87,7 +87,7 @@
         <counts>
           <entry key="HTML" value="3" />
           <entry key="Image" value="1" />
-          <entry key="PHP" value="67" />
+          <entry key="PHP" value="69" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
@@ -101,10 +101,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/application/web/model/Music.php">
+        <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+            <state relative-caret-position="475">
+              <caret line="412" column="61" selection-start-line="412" selection-start-column="61" selection-end-line="412" selection-end-column="61" />
+              <folding>
+                <element signature="e#124#140#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -181,10 +184,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>gen_user_card_qr</find>
-      <find>//</find>
-      <find>#</find>
-      <find>get</find>
       <find>$filename</find>
       <find>getRealPath</find>
       <find>move</find>
@@ -204,13 +203,17 @@
       <find>model</find>
       <find>attend</find>
       <find>uplo</find>
-      <find>upload</find>
       <find>image</find>
       <find>save</find>
       <find>del</find>
       <find>创建</find>
       <find>music</find>
       <find>$search_method</find>
+      <find>qr</find>
+      <find>wxca7cf8f75db95d01</find>
+      <find>upload</find>
+      <find>time</find>
+      <find>card_id</find>
     </findStrings>
     <replaceStrings>
       <replace>$search_condition</replace>
@@ -459,15 +462,16 @@
       <workItem from="1545452450541" duration="20060000" />
       <workItem from="1546338190229" duration="1680000" />
       <workItem from="1546341025944" duration="2895000" />
-      <workItem from="1546745711308" duration="179000" />
+      <workItem from="1546745711308" duration="8498000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134159000" />
+    <option name="totallyTimeSpent" value="142478000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.26898223" />
@@ -578,7 +582,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/wx/controller/CryptWxData/errorCode.php">
+    <entry file="file://$PROJECT_DIR$/application/wx/controller/CryptWxData/ErrorCode.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="26" column="42" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
@@ -694,24 +698,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/topthink/think-image/src/Image.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="140" column="16" selection-start-line="140" selection-start-column="16" selection-end-line="140" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/web/model/Music.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -759,6 +749,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config/log.php">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/topthink/think-image/src/Image.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="761">
+          <caret line="462" column="17" lean-forward="true" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/wx/controller/Api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="412" column="61" selection-start-line="412" selection-start-column="61" selection-end-line="412" selection-end-column="61" />
+          <folding>
+            <element signature="e#124#140#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">
