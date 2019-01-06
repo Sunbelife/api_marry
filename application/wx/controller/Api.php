@@ -382,8 +382,6 @@ Class Api extends Controller
     # 生成二维码
     public function gen_user_card_qr($card_id = 0, $scene = 0, $page = 0)
     {
-        $scene = "test/xx/xx";
-        $page = "pages/index/index";
         $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this::$app_id."&secret=".$this::$secret;
         $qr_model_pic = "static/pic/gen_qr_model.jpg";
         $data =  json_decode(file_get_contents($access_token_url));
@@ -410,7 +408,7 @@ Class Api extends Controller
             $image = Image::open($qr_model_pic);
             $image->water($file_name, array(330, 1250))->save($file_name);
             $file_url = "https://xcx.lyy99.com/".$file_name;
-            return $this->return_json(200, "生成成功", array("pic_url"=>$file_url));
+            return $this->return_json(200, "生成成功", $file_url);
         } else {
             return $this->return_json($errcode, $errmsg, null);
         }
