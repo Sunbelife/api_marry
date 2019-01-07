@@ -111,7 +111,7 @@ Class Api extends Controller
 
     # 请帖部分
     # 保存请帖 - 此处生成 card_id
-    public function save_user_card($card_id = 0, $open_id, $changed_log, $cover_pic_url)
+    public function save_user_card($card_id = 0, $invitationInfo, $open_id, $changed_log, $cover_pic_url)
     {
         $save_time = Date("Y-m-d H:i:s",time());
         if ($card_id == '0')
@@ -127,6 +127,7 @@ Class Api extends Controller
             $result = $UserCard->save();
             if ($result == True)
             {
+                $this->send_user_card_info($card_id, $invitationInfo['nameGentleman'], $invitationInfo['nameLady'], $invitationInfo['date'].$invitationInfo['time'],$invitationInfo['address']);
                 return $this->return_json(200, "创建成功", array('card_id'=> $UserCard->card_id));
             } else
             {
@@ -357,7 +358,7 @@ Class Api extends Controller
     }
 
     # 保存用户结婚信息
-    public function send_user_card_info($card_id, $boy_name, $girl_name, $marr_time, $contact_num, $marr_addr)
+    public function send_user_card_info($card_id, $boy_name, $girl_name, $marr_time, $marr_addr)
     {
         $create_time = Date("Y-m-d H:i:s",time());
         $marry_man = new MarryMan([
@@ -365,7 +366,6 @@ Class Api extends Controller
             'boy_name'=>$boy_name,
             'girl_name'=>$girl_name,
             'marr_time'=>$marr_time,
-            'contact_num'=>$contact_num,
             'marr_addr'=>$marr_addr,
             'create_time'=>$create_time
         ]);
