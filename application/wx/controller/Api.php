@@ -382,6 +382,12 @@ Class Api extends Controller
     # 生成二维码
     public function gen_user_card_qr($card_id = 0, $scene = 0, $page = 0)
     {
+        $marry_info = MarryMan::getByCardId($card_id);
+        $boy_name = $marry_info -> boy_name;
+        $girl_name = $marry_info -> girl_name;
+        $marr_time = strtotime($marry_info -> marr_time);
+        $marr_addr = $marry_info -> marr_addr;
+
         $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this::$app_id."&secret=".$this::$secret;
         $qr_model_pic = "static/pic/gen_qr_model.jpg";
         $data =  json_decode(file_get_contents($access_token_url));
@@ -393,7 +399,8 @@ Class Api extends Controller
             $qr_api_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=".$access_token;
             $parms = [
                 'scene' => $scene,
-                'page' => $page
+                'page' => $page,
+                'width' => 350
             ];
             $context = stream_context_create(array('http' => array(
                 'method' => 'POST',
@@ -407,7 +414,12 @@ Class Api extends Controller
             fwrite($file, $png);
             fclose($file);
             $image = Image::open($qr_model_pic);
-            $image -> water($file_name, array(330, 1250)) -> save($file_name);
+            $image -> water($file_name, array(370, 1350)) -> save($file_name);
+            $image = Image::open($file_name);
+            $image -> text($boy_name." & ".$girl_name, 'uploads/fonts/PingFang.ttc', 60, '#000000', \think\Image::WATER_CENTER, array(0, -100));
+            $image -> text("婚礼请帖", 'uploads/fonts/PingFang.ttc', 40, '#000000', \think\Image::WATER_CENTER, array(0, 0));
+            $image -> text("日期: ". date("Y 年 m 月 d 日", $marr_time) . "\n" . "时间: ". date("h:i", $marr_time) . "\n" . "地点: ".$marr_addr, 'uploads/fonts/PingFang.ttc', 20, '#000000', \think\Image::WATER_CENTER, array(0, 120));
+            $image -> save($file_name);
             $file_url = "https://xcx.lyy99.com/".$file_name;
             return $this->return_json(200, "生成成功", $file_url);
         } else {
