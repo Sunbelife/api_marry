@@ -111,7 +111,7 @@ Class Api extends Controller
 
     # 请帖部分
     # 保存请帖 - 此处生成 card_id
-    public function save_user_card($card_id = 0, $invitationInfo, $open_id, $changed_log, $cover_pic_url)
+    public function save_user_card($card_id = 0, $marry_info, $open_id, $changed_log, $cover_pic_url)
     {
         $save_time = Date("Y-m-d H:i:s",time());
         if ($card_id == '0')
@@ -127,7 +127,7 @@ Class Api extends Controller
             $result = $UserCard->save();
             if ($result == True)
             {
-                $this->send_user_card_info($card_id, $invitationInfo['nameGentleman'], $invitationInfo['nameLady'], $invitationInfo['date'].$invitationInfo['time'],$invitationInfo['address']);
+                $this->send_user_card_info($UserCard->card_id, $marry_info['nameGentleman'], $marry_info['nameLady'], $marry_info['date']." ".$marry_info['time'],$marry_info['address']);
                 return $this->return_json(200, "创建成功", array('card_id'=> $UserCard->card_id));
             } else
             {
@@ -141,6 +141,7 @@ Class Api extends Controller
             $result = $curr_card->save();
             if ($result == True)
             {
+                $this->send_user_card_info($card_id, $marry_info['nameGentleman'], $marry_info['nameLady'], $marry_info['date']." ".$marry_info['time'],$marry_info['address']);
                 return $this->return_json(200, "修改成功", null);
             } else
             {
