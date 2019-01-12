@@ -8,8 +8,6 @@
 
 namespace app\wx\controller;
 
-ini_set(”memory_limit”,”100M”);
-
 use think\Image;
 use think\Controller;
 use app\wx\model\UserCard;
@@ -42,7 +40,7 @@ Class Api extends Controller
 
     public function return_card_id($id)
     {
-        return md5(Date("Y-m-d").$id);
+        return substr(md5(Date("Y-m-d").$id), 8, 16);
     }
 
     public function get_shared_user_card($open_id) {
@@ -113,10 +111,10 @@ Class Api extends Controller
 
     # 请帖部分
     # 保存请帖 - 此处生成 card_id
-    public function save_user_card($card_id = 0, $open_id, $changed_log, $cover_pic_url)
+    public function save_user_card($card_id = 0, $marry_info, $open_id, $changed_log, $cover_pic_url)
     {
         $save_time = Date("Y-m-d H:i:s",time());
-        if ($card_id == 0)
+        if ($card_id == '0')
         {
             $UserCard = new UserCard;
             $UserCard->cover_pic_url = $cover_pic_url;
@@ -129,12 +127,13 @@ Class Api extends Controller
             $result = $UserCard->save();
             if ($result == True)
             {
+                $this->send_user_card_info($UserCard->card_id, $marry_info['nameGentleman'], $marry_info['nameLady'], $marry_info['date']." ".$marry_info['time'],$marry_info['address']);
                 return $this->return_json(200, "创建成功", array('card_id'=> $UserCard->card_id));
             } else
             {
                 return $this->return_json(250, "创建失败", null);
             }
-        } else if ($card_id != 0)
+        } else
         {
             $curr_card = UserCard::getByCardId($card_id);
             $curr_card->changed_log = $changed_log;
@@ -142,6 +141,7 @@ Class Api extends Controller
             $result = $curr_card->save();
             if ($result == True)
             {
+                $this->send_user_card_info($card_id, $marry_info['nameGentleman'], $marry_info['nameLady'], $marry_info['date']." ".$marry_info['time'],$marry_info['address']);
                 return $this->return_json(200, "修改成功", null);
             } else
             {
@@ -232,16 +232,27 @@ Class Api extends Controller
     # 获取全部弹幕
     public function get_barrage_msg($open_id)
     {
-        $data = Barrage::where('open_id', $open_id)->select();
+        $data = Barrage::where('open_id', $open_id)->order('msg_id', 'desc')->select();
         return $this->return_json(200, "获取成功", $data);
     }
 
-    public function del_barrage_msg($msg_id)
+    public function del_barrage_msg($msg_id, $is_reply)
     {
         $data = Barrage::where('msg_id', $msg_id)->select();
-        foreach ($data as $key)
+        if ($data != true)
         {
-            $key->delete();
+            return $this->return_json(250, "删除失败，无此条消息", null);
+        }
+        if ($is_reply == 1)
+        {
+            $data[1]->delete();
+        }
+        else {
+            foreach ($data as $key)
+            {
+                # 否则全删除
+                $key->delete();
+            }
         }
         return $this->return_json(200, "删除成功", null);
     }
@@ -262,12 +273,12 @@ Class Api extends Controller
             $item->is_read = 1;
             $item->save();
         }
-        if ($data == null)
-        {
-            return $this->return_json(250, "设置失败", null);
-        } else
+        if (empty($data) != true)
         {
             return $this->return_json(200, "设置成功", null);
+        } else
+        {
+            return $this->return_json(250, "设置失败", null);
         }
     }
 
@@ -348,7 +359,7 @@ Class Api extends Controller
     }
 
     # 保存用户结婚信息
-    public function send_user_card_info($card_id, $boy_name, $girl_name, $marr_time, $contact_num, $marr_addr)
+    public function send_user_card_info($card_id, $boy_name, $girl_name, $marr_time, $marr_addr)
     {
         $create_time = Date("Y-m-d H:i:s",time());
         $marry_man = new MarryMan([
@@ -356,7 +367,6 @@ Class Api extends Controller
             'boy_name'=>$boy_name,
             'girl_name'=>$girl_name,
             'marr_time'=>$marr_time,
-            'contact_num'=>$contact_num,
             'marr_addr'=>$marr_addr,
             'create_time'=>$create_time
         ]);
@@ -373,31 +383,46 @@ Class Api extends Controller
     # 生成二维码
     public function gen_user_card_qr($card_id = 0, $scene = 0, $page = 0)
     {
-        $scene = "test";
-        $page = "test";
+        $marry_info = MarryMan::getByCardId($card_id);
+        $boy_name = $marry_info -> boy_name;
+        $girl_name = $marry_info -> girl_name;
+        $marr_time = strtotime($marry_info -> marr_time);
+        $marr_addr = $marry_info -> marr_addr;
+
         $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this::$app_id."&secret=".$this::$secret;
-        $qr_model_pic = "static/pic/gen_qr_model.png";
+        $qr_model_pic = "static/pic/gen_qr_model.jpg";
         $data =  json_decode(file_get_contents($access_token_url));
         $errcode = $this::return_value($data, "errcode");
         $errmsg = $this::return_value($data, "errmsg");
-        if ($errcode == 0) {
-            $access_token = $this::return_value($data, "access_token");
-            $qr_api_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN";
+        if ($errcode == 0)
+        {
+            $access_token = $data->access_token;
+            $qr_api_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=".$access_token;
             $parms = [
-                'access_token' => $access_token,
                 'scene' => $scene,
-                'page' => $page
+                'page' => $page,
+                'width' => 350
             ];
             $context = stream_context_create(array('http' => array(
                 'method' => 'POST',
-                'header' => 'Content-type:application/x-www-form-urlencoded',
-                'content' => http_build_query($parms),
+                'header' => 'Content-type:application/json',
+                'content' => json_encode($parms),
                 'timeout' => 20
             )));
-            $data = file_get_contents($qr_api_url, false, $context);
-            $pic_model = imagecreatefrompng($qr_model_pic);
-
-            return $data;
+            $png = file_get_contents($qr_api_url, false, $context);
+            $file_name = "uploads/qr_codes/".md5(Date("Y-m-d H:i:s",time())).".jpg";
+            $file = fopen($file_name, "w");
+            fwrite($file, $png);
+            fclose($file);
+            $image = Image::open($qr_model_pic);
+            $image -> water($file_name, array(370, 1350)) -> save($file_name);
+            $image = Image::open($file_name);
+            $image -> text($boy_name." & ".$girl_name, 'uploads/fonts/PingFang.ttc', 60, '#000000', \think\Image::WATER_CENTER, array(0, -100));
+            $image -> text("婚礼请帖", 'uploads/fonts/PingFang.ttc', 40, '#000000', \think\Image::WATER_CENTER, array(0, 0));
+            $image -> text("日期: ". date("Y 年 m 月 d 日", $marr_time) . "\n" . "时间: ". date("h:i", $marr_time) . "\n" . "地点: ".$marr_addr, 'uploads/fonts/PingFang.ttc', 20, '#000000', \think\Image::WATER_CENTER, array(0, 120));
+            $image -> save($file_name);
+            $file_url = "https://xcx.lyy99.com/".$file_name;
+            return $this->return_json(200, "生成成功", $file_url);
         } else {
             return $this->return_json($errcode, $errmsg, null);
         }

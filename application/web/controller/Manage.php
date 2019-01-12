@@ -11,6 +11,7 @@ use app\web\model\MarryMan;
 use app\web\model\MarryModel;
 use app\wx\model\AttendInfo;
 use app\wx\model\UserCard;
+use function Sodium\add;
 use think\Controller;
 use app\web\model\Barrage;
 use app\web\model\Music;
@@ -43,34 +44,46 @@ class Manage extends Controller
     }
 
     # Music 音乐部分
-    public function get_music_list($music_type = 0, $music_name = 0)
+    public function get_music_list($music_type = 0, $music_name = 0, $music_singer = 0)
     {
         # 啥条件都没有的时候
-        if ($music_type == '0' and $music_name == '0')
+        if ($music_type == '0' and $music_name == '0' and $music_singer = 0)
         {
             # 输出所有
             $data = Music::all();
-        } else if ($music_type == '0' && $music_name != '0') # 类别不限，按名称搜
-        {
-            $data = Music::where('music_name', 'like', '%'.$music_name.'%')->select();
-        } else if ($music_type != '0' && $music_name == '0') # 名称不限，按类别搜
-        {
-            $data = Music::where('music_type', $music_type)->select();
         } else
         {
-            $data = Music::where('music_type', $music_type)->where('music_name', $music_name)->select();
+            $search_condition = array(); // 初始化搜索条件
+
+            # 有啥信息就填啥信息
+            if ($music_name != '0')
+            {
+                array_push($search_condition,['music_name', 'like', '%'.$music_name.'%']);
+            }
+            if ($music_type != '0')
+            {
+                array_push($search_condition,['music_type', '=', $music_type]);
+            }
+            if ($music_singer != '0')
+            {
+                array_push($search_condition,['$music_singer', '=' ,$music_singer]);
+            }
         }
-        if ($data == true)
+
+        # 执行查询
+        $data = Music::where($search_condition)->select();
+
+        if (empty($data) != true)
         {
             return $this::return_json(200, "获取成功", $data);
         } else
         {
-            return $this::return_json(250, "获取失败", null);
+            return $this::return_json(250, "获取失败，空值", null);
         }
     }
 
     # 音乐上传
-    public function upload_music($music_name = 0, $music_type = 0)
+    public function upload_music($music_name = 0, $music_type = 0, $music_singer = 0)
     {
         $upload_dir = '../public/uploads/music';
         // 获取表单上传文件
@@ -85,6 +98,7 @@ class Manage extends Controller
             $new_music = new Music;
             $new_music->save([
                 'music_name' => $music_name,
+                'music_singer' => $music_singer,
                 'music_type' => $music_type,
                 'music_upload_time' => $upload_time,
                 'music_url' => $file_url
@@ -147,7 +161,7 @@ class Manage extends Controller
     {
         $data = MarryModel::getByModel_id($model_id);
         $result = $data->delete();
-        if ($result == true) {
+        if (empty($result) == true) {
             return $this::return_json(200, "获取成功", $data);
         }
         return $this::return_json(250, "获取成功", $data);
