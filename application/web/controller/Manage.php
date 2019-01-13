@@ -132,20 +132,14 @@ class Manage extends Controller
 
     public function get_attend_info_attend_man($card_id)
     {
-        $user = UserCard::getByCardId($card_id);
-        if (empty($user) == true)
+        $data = AttendInfo::getByCardId($card_id);
+        if (empty($data) == true)
         {
             return $this->return_json(250, "获取失败", null);
-        }
-        try
+        } else
         {
-            $card_id = $user->card_id;
-            $data = AttendInfo::where('card_id', $card_id)->select();
-        } catch (Exception $exception)
-        {
-            return $this->return_json(250, "找不到该卡片", null);
+            return $this::return_json(200, "获取成功", $data);
         }
-        return $this::return_json(200, "获取成功", $data);
     }
 
     # 模板管理部分
