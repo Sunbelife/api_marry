@@ -332,12 +332,13 @@ Class Api extends Controller
 
     # 赴宴信息部分
     # 赴宴填写
-    public function send_attend_info($card_id, $user_name, $transit_type, $phone_num, $attend_num)
+    public function send_attend_info($card_id, $open_id, $user_name, $transit_type, $phone_num, $attend_num)
     {
         $attend_info = new AttendInfo;
         $attend_time = Date("Y-m-d H:i:s",time());
         $result = $attend_info -> save([
             'card_id' => $card_id,
+            'open_id' => $open_id,
             'user_name' => $user_name,
             'transit_type' => $transit_type,
             'phone_num' => $phone_num,
@@ -355,9 +356,9 @@ Class Api extends Controller
     }
 
     # 赴宴消息获取
-    public function get_attend_info($card_id)
+    public function get_attend_info($open_id)
     {
-        $data = AttendInfo::getByCardId($card_id);
+        $data = AttendInfo::getByOpenId($open_id);
         if ($data == null)
         {
             return $this->return_json(250, "获取失败", null);
