@@ -10,6 +10,8 @@ namespace app\web\controller;
 use app\web\model\MarryMan;
 use app\web\model\MarryModel;
 use app\wx\model\AttendInfo;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use app\wx\model\UserCard;
 use function Sodium\add;
 use think\Controller;
@@ -137,8 +139,8 @@ class Manage extends Controller
         }
         try
         {
-            $open_id = $user->open_id;
-            $data = AttendInfo::where('open_id', $open_id)->select();
+            $card_id = $user->card_id;
+            $data = AttendInfo::where('card_id', $card_id)->select();
         } catch (Exception $exception)
         {
             return $this->return_json(250, "找不到该卡片", null);
@@ -162,8 +164,36 @@ class Manage extends Controller
         $data = MarryModel::getByModel_id($model_id);
         $result = $data->delete();
         if (empty($result) == true) {
-            return $this::return_json(200, "获取成功", $data);
+            return $this::return_json(200, "删除成功", $data);
         }
-        return $this::return_json(250, "获取成功", $data);
+        return $this::return_json(250, "删除失败", $data);
+    }
+
+    public function export_excel()
+    {
+        $marry_man_data = MarryMan::all();
+
+        foreach ($marry_man_data as $curr_man)
+        {
+            $curr_card_id = $curr_man -> card_id;
+            if (empty($curr_card_id) == false)
+            {
+                print $curr_man->boy_name."<br>";
+                print $curr_man->girl_name."<br>";
+                $curr_attend_info = AttendInfo::getByCardId($curr_card_id);
+                print $curr_attend_info->user_name."<br>";
+                print $curr_attend_info->phone_num."<br>";
+                print $curr_attend_info->attend_num."<br>";
+                print $curr_attend_info->transit_type."<br>";
+            }
+        }
+
+//        $upload_dir = '../public/uploads/excels/';
+//        $spreadsheet = new Spreadsheet();
+//        $sheet = $spreadsheet->getActiveSheet();
+//        $sheet->setCellValue('A1', 'Hello World !');
+//
+//        $writer = new Xlsx($spreadsheet);
+//        $writer->save($upload_dir.md5(Date("Y-m-d H:i:s",time())).'.xlsx');
     }
 }
