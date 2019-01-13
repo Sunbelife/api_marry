@@ -135,7 +135,7 @@ class Manage extends Controller
         $data = AttendInfo::getByCardId($card_id);
         if (empty($data) == true)
         {
-            return $this->return_json(250, "获取失败", null);
+            return $this->return_json(250, "无数据", null);
         } else
         {
             return $this::return_json(200, "获取成功", $data);
