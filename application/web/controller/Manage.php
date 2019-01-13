@@ -133,7 +133,7 @@ class Manage extends Controller
     public function get_attend_info_attend_man($card_id)
     {
         $user = UserCard::getByCardId($card_id);
-        if ($user == null)
+        if (empty($user) == true)
         {
             return $this->return_json(250, "获取失败", null);
         }
