@@ -138,7 +138,7 @@ class Manage extends Controller
             return $this->return_json(200, "无数据", null);
         } else
         {
-            return $this::return_json(200, "获取成功", $data);
+            return $this::return_json(200, "获取成功", array($data));
         }
     }
 
