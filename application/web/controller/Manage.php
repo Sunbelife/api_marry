@@ -132,7 +132,7 @@ class Manage extends Controller
 
     public function get_attend_info_attend_man($card_id)
     {
-        $data = AttendInfo::getByCardId($card_id);
+        $data = AttendInfo::where('card_id', $card_id)->select();
         if (empty($data) == true)
         {
             return $this->return_json(200, "无数据", null);
