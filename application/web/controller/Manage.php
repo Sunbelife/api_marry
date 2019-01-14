@@ -135,7 +135,7 @@ class Manage extends Controller
         $data = AttendInfo::getByCardId($card_id);
         if (empty($data) == true)
         {
-            return $this->return_json(250, "无数据", null);
+            return $this->return_json(200, "无数据", null);
         } else
         {
             return $this::return_json(200, "获取成功", $data);
@@ -167,27 +167,49 @@ class Manage extends Controller
     {
         $marry_man_data = MarryMan::all();
 
+        $upload_dir = '../public/uploads/excels/';
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->getDefaultColumnDimension()->setWidth(22);
+        $sheet->setCellValue('A1', '新娘新郎姓名');
+        $sheet->setCellValue('B1', '赴宴人姓名');
+        $sheet->setCellValue('C1', '赴宴人数');
+        $sheet->setCellValue('D1', '联系电话');
+        $sheet->setCellValue('E1', '交通工具');
+        $sheet->setCellValue('F1', '填写时间');
+
+        $cell_index = 2;
         foreach ($marry_man_data as $curr_man)
         {
-            $curr_card_id = $curr_man -> card_id;
-            if (empty($curr_card_id) == false)
+            $curr_attend_info = AttendInfo::where("card_id", $curr_man -> card_id)->select();
+
+            if (empty($curr_attend_info) == false)
             {
-                print $curr_man->boy_name."<br>";
-                print $curr_man->girl_name."<br>";
-                $curr_attend_info = AttendInfo::getByCardId($curr_card_id);
-                print $curr_attend_info->user_name."<br>";
-                print $curr_attend_info->phone_num."<br>";
-                print $curr_attend_info->attend_num."<br>";
-                print $curr_attend_info->transit_type."<br>";
+                $marry_man = $curr_man->boy_name."&".$curr_man->girl_name;
+
+                foreach ($curr_attend_info as $item)
+                {
+                    $sheet->setCellValueByColumnAndRow(1, $cell_index, $marry_man);
+                    $sheet->setCellValueByColumnAndRow(2, $cell_index, $item->user_name);
+                    $sheet->setCellValueByColumnAndRow(3, $cell_index, $item->attend_num);
+                    $sheet->setCellValueByColumnAndRow(4, $cell_index, $item->phone_num);
+                    $sheet->setCellValueByColumnAndRow(5, $cell_index, $item->transit_type);
+                    $sheet->setCellValueByColumnAndRow(6, $cell_index, $item->create_time);
+                    $cell_index++;
+                }
             }
+
         }
 
-//        $upload_dir = '../public/uploads/excels/';
-//        $spreadsheet = new Spreadsheet();
-//        $sheet = $spreadsheet->getActiveSheet();
-//        $sheet->setCellValue('A1', 'Hello World !');
-//
-//        $writer = new Xlsx($spreadsheet);
-//        $writer->save($upload_dir.md5(Date("Y-m-d H:i:s",time())).'.xlsx');
+        /* Here there will be some code where you create $spreadsheet */
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="赴宴信息.xls"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer->save('php://output');
+        exit;
     }
 }
