@@ -215,6 +215,7 @@ Class Api extends Controller
         $send_time = Date("Y-m-d H:i:s",time());
         $msg_id = md5(Date("Y-m-d H:i:s"));
         $Barriage->open_id = $user_card->open_id; // open_id 与发送者相同
+        $Barriage->card_id = $card_id;
         $Barriage->msg_id = $msg_id;
         $Barriage->user_name = $user_name;
         $Barriage->message = $message;
@@ -229,10 +230,17 @@ Class Api extends Controller
         return $this->return_json(250, "发送失败", null);
     }
 
-    # 获取全部弹幕
+    # 获取用户所有全部弹幕
     public function get_barrage_msg($open_id)
     {
         $data = Barrage::where('open_id', $open_id)->order('msg_id', 'desc')->select();
+        return $this->return_json(200, "获取成功", $data);
+    }
+
+    # 获取 card 弹幕
+    public function get_card_barrage_msg($card_id)
+    {
+        $data = Barrage::where('card_id', $card_id)->order('msg_id', 'desc')->select();
         return $this->return_json(200, "获取成功", $data);
     }
 
@@ -290,6 +298,7 @@ Class Api extends Controller
         $barrage = new Barrage;
         $result = $barrage -> save([
             'open_id'=>$old_msg->open_id,
+            'card_id'=>$old_msg->card_id,
             'user_name'=>"回复 @".$old_msg->user_name.":",
             'message'=>$message,
             'msg_id'=>$msg_id,
@@ -323,11 +332,12 @@ Class Api extends Controller
 
     # 赴宴信息部分
     # 赴宴填写
-    public function send_attend_info($open_id, $user_name, $transit_type, $phone_num, $attend_num)
+    public function send_attend_info($card_id, $open_id, $user_name, $transit_type, $phone_num, $attend_num)
     {
         $attend_info = new AttendInfo;
         $attend_time = Date("Y-m-d H:i:s",time());
         $result = $attend_info -> save([
+            'card_id' => $card_id,
             'open_id' => $open_id,
             'user_name' => $user_name,
             'transit_type' => $transit_type,

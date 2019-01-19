@@ -10,6 +10,8 @@ namespace app\web\controller;
 use app\web\model\MarryMan;
 use app\web\model\MarryModel;
 use app\wx\model\AttendInfo;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use app\wx\model\UserCard;
 use function Sodium\add;
 use think\Controller;
@@ -130,20 +132,14 @@ class Manage extends Controller
 
     public function get_attend_info_attend_man($card_id)
     {
-        $user = UserCard::getByCardId($card_id);
-        if ($user == null)
+        $data = AttendInfo::where('card_id', $card_id)->select();
+        if (empty($data) == true)
         {
-            return $this->return_json(250, "获取失败", null);
+            return $this->return_json(200, "无数据", null);
+        } else
+        {
+            return $this::return_json(200, "获取成功", array($data));
         }
-        try
-        {
-            $open_id = $user->open_id;
-            $data = AttendInfo::where('open_id', $open_id)->select();
-        } catch (Exception $exception)
-        {
-            return $this->return_json(250, "找不到该卡片", null);
-        }
-        return $this::return_json(200, "获取成功", $data);
     }
 
     # 模板管理部分
@@ -162,8 +158,58 @@ class Manage extends Controller
         $data = MarryModel::getByModel_id($model_id);
         $result = $data->delete();
         if (empty($result) == true) {
-            return $this::return_json(200, "获取成功", $data);
+            return $this::return_json(200, "删除成功", $data);
         }
-        return $this::return_json(250, "获取成功", $data);
+        return $this::return_json(250, "删除失败", $data);
+    }
+
+    public function export_excel()
+    {
+        $marry_man_data = MarryMan::all();
+
+        $upload_dir = '../public/uploads/excels/';
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->getDefaultColumnDimension()->setWidth(22);
+        $sheet->setCellValue('A1', '新娘新郎姓名');
+        $sheet->setCellValue('B1', '赴宴人姓名');
+        $sheet->setCellValue('C1', '赴宴人数');
+        $sheet->setCellValue('D1', '联系电话');
+        $sheet->setCellValue('E1', '交通工具');
+        $sheet->setCellValue('F1', '填写时间');
+
+        $cell_index = 2;
+        foreach ($marry_man_data as $curr_man)
+        {
+            $curr_attend_info = AttendInfo::where("card_id", $curr_man -> card_id)->select();
+
+            if (empty($curr_attend_info) == false)
+            {
+                $marry_man = $curr_man->boy_name."&".$curr_man->girl_name;
+
+                foreach ($curr_attend_info as $item)
+                {
+                    $sheet->setCellValueByColumnAndRow(1, $cell_index, $marry_man);
+                    $sheet->setCellValueByColumnAndRow(2, $cell_index, $item->user_name);
+                    $sheet->setCellValueByColumnAndRow(3, $cell_index, $item->attend_num);
+                    $sheet->setCellValueByColumnAndRow(4, $cell_index, $item->phone_num);
+                    $sheet->setCellValueByColumnAndRow(5, $cell_index, $item->transit_type);
+                    $sheet->setCellValueByColumnAndRow(6, $cell_index, $item->create_time);
+                    $cell_index++;
+                }
+            }
+
+        }
+
+        /* Here there will be some code where you create $spreadsheet */
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="赴宴信息.xls"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer->save('php://output');
+        exit;
     }
 }
